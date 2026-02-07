@@ -4,7 +4,7 @@ const router = express.Router();
 const Admin = require("../../models/Admin")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken");
-const AdminToken = require("../../models/AdminToken");
+const AdminToken = require("../../models/Admintoken");
 const SECRET_KEY = process.env.ADMIN_TOKEN_SECRET_KEY
 
 // http://localhost:5000/api/admin/login
