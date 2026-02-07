@@ -1,4 +1,4 @@
-const AdminToken = require("../../models/AdminToken");
+const AdminToken = require("../../models/Admintoken");
 const express = require("express");
 const router = express.Router();
 
