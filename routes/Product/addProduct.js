@@ -21,7 +21,7 @@ const proStore = multer.diskStorage({
 // initialize multer
 
 const uploadPro = multer({
-    storage: proStore,
+    storage: multer.memoryStorage(),
     limits: { fileSize: 1024 * 1024 * 5 }
 })
 
@@ -55,7 +55,7 @@ router.post("/product/uploadimages/:id", uploadImages.array("images"), async (re
 })
 
 // http://localhost:5000/api/product/add
-router.post("/product/add", async (req, res) => {
+router.post("/product/add", uploadPro.single("productThumbnailImg"), async (req, res) => {
     const {
         productCategory,
         productName,
@@ -66,10 +66,12 @@ router.post("/product/add", async (req, res) => {
         productSaleStartDate,
         productSaleEndDate,
     } = req.body;
-    const productThumbnailImg = req.file.filename;
     try {
-        const uploadResult = await cloudinary.uploader.upload(productThumbnailImg,{
-            folder:"products"
+        const uploadResult = await new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream(
+                { folder: "products" },
+                (err,result)=> (err ? reject(err) : resolve(result))
+            ).end(req.file.buffer);
         })
         const newProduct = new AddProductSchema({
             productCategory,
@@ -78,7 +80,7 @@ router.post("/product/add", async (req, res) => {
             productLongDescription,
             productPrice,
             productSalePrice,
-            productThumbnailImg:uploadResult.secure_url,
+            productThumbnailImg: uploadResult.secure_url,
             productSaleStartDate,
             productSaleEndDate,
         })
