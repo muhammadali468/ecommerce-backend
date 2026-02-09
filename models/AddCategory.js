@@ -8,7 +8,7 @@ const addCategorySchema = new mongoose.Schema({
     cat_img:{
         type:String,
         required:true,
-    }
+    },
 }, {timestamps:true});
 
 module.exports = mongoose.model("AddCategorySchema", addCategorySchema)

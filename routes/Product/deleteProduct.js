@@ -1,20 +1,27 @@
+require("dotenv").config()
 const express = require("express");
 const AddProductSchema = require("../../models/AddProduct");
-const path = require("path");
-const fs = require("fs")
 const router = express.Router();
+const cloudinary = require("cloudinary").v2
 
-const productDirectory = path.join(path.resolve(__dirname, "../../", "products"));
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 router.delete("/product/delete/:id", async (req, res) => {
     const product = await AddProductSchema.findById(req.params.id);
     const productImg = product.productThumbnailImg;
-    const filePath = path.join(productDirectory, productImg)
+
+    const parts = productImg.split("/");
+    const folderAndFile = parts.slice(-2).join("/"); // folder_name/image_name.jpg
+    const publicId = folderAndFile.replace(/\.[^/.]+$/, ""); // remove .jpg
     try {
         const productToBeDeleted = await AddProductSchema.findByIdAndDelete(req.params.id)
-        if (productToBeDeleted) {
+        const productImgToBeDeleted = await cloudinary.uploader.destroy(publicId);
+        if (productToBeDeleted && productImgToBeDeleted) {
             res.json({ sts: 0, msg: "Product Deleted!" })
-            fs.unlinkSync(filePath);
         }
     } catch (error) {
         console.log(error)
