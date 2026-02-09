@@ -1,17 +1,15 @@
+require("dotenv").config()
 const express = require("express");
 const multer = require("multer");
-// const shortid = require("shortid");
-// const path = require("path");
 const cloudinary = require("cloudinary").v2
-// const AddCategorySchema = require("../../models/AddCategory");
 const AddCategorySchema = require("../../models/AddCategory");
 
 const router = express.Router();
 
 cloudinary.config({
-    cloud_name: "donm326ji",
-    api_key: "111481265588618",
-    api_secret: "5oLyoclV17XIR6nP2FMK_3QKbB0"
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 })
 // initialize multer
 

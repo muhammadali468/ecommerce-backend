@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express");
 const multer = require("multer");
 const shortid = require("shortid");
@@ -5,9 +6,14 @@ const path = require("path");
 const AddProductSchema = require("../../models/AddProduct");
 const AddProductImg = require("../../models/AddProductImg");
 const cloudinary = require("cloudinary").v2
-
-
 const router = express.Router();
+
+// 
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 // image storage engine setup
 const proStore = multer.diskStorage({
@@ -27,11 +33,7 @@ const uploadPro = multer({
 
 const uploadImages = multer({ storage: proStore });
 
-cloudinary.config({
-    cloud_name: "donm326ji",
-    api_key: "111481265588618",
-    api_secret: "5oLyoclV17XIR6nP2FMK_3QKbB0"
-})
+
 
 // http://localhost:5000/api/product/uploadimages/id
 router.post("/product/uploadimages/:id", uploadImages.array("images"), async (req, res) => {
@@ -39,14 +41,19 @@ router.post("/product/uploadimages/:id", uploadImages.array("images"), async (re
     const imageFiles = req.files;
 
     try {
-        const imagePromises = imageFiles.map((file) => {
-            const newProImages = new AddProductImg({
-                productId,
-                productImg: file.filename
-            })
-            return newProImages.save()
+        const uploadImagesPromises = imageFiles.map((file) => {
+            return cloudinary.uploader.upload_stream({ resource_type: "image" },
+                async (error, result) => {
+                    if (error) throw error;
+                    const newProImages = new AddProductImg({
+                        productId,
+                        productImg: result.secure_url
+                    })
+                    await newProImages.save()
+                }
+            ).end(file.buffer)
         })
-        await Promise.all(imagePromises)
+        await Promise.all(uploadImagesPromises)
         res.json({ sts: 0, msg: "Images uploaded!" })
 
     } catch (error) {
@@ -70,7 +77,7 @@ router.post("/product/add", uploadPro.single("productThumbnailImg"), async (req,
         const uploadResult = await new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream(
                 { folder: "products" },
-                (err,result)=> (err ? reject(err) : resolve(result))
+                (err, result) => (err ? reject(err) : resolve(result))
             ).end(req.file.buffer);
         })
         const newProduct = new AddProductSchema({
