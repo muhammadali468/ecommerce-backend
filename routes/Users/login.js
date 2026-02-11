@@ -21,7 +21,7 @@ router.post("/user/login", async (req, res) => {
             return res.json({ sts: 3, msg: "Incorrect Password" });
         }
         const token = jwt.sign({ id: validUser._id }, USER_SECRET_KEY, { expiresIn: "6h" })
-        res.json({ "token": token, sts: 0, msg: "User Login!" })
+        res.json({ sts: 0, msg: "User Login!", token, email: validUser.email, name:validUser.name  })
 
     } catch (error) {
         console.log(error)
@@ -29,8 +29,8 @@ router.post("/user/login", async (req, res) => {
 })
 
 // middleware testing
-router.get("/testauth", UserAuthentication, async(req,res)=>{
-    res.json({msg:"Middleware is working"})
+router.get("/testauth", UserAuthentication, async (req, res) => {
+    res.json({ msg: "Middleware is working" })
 })
 
 

@@ -21,7 +21,7 @@ router.post("/user/register", async (req, res) => {
             password: hashedPassword
         })
         if(registerUser){
-            return res.json({ sts: 0, msg: "User registered!" })
+            return res.json({ sts: 0, msg: "User registered!", name, email })
         }
     } catch (error) {
         console.log(error)

@@ -35,10 +35,14 @@ const uploadProductImages = require("./routes/Product/uploadProductImages");
 // user
 const userLogin = require("./routes/Users/login");
 const userRegister = require("./routes/Users/register");
+// order
+const order = require("./routes/Users/placeOrder");
+// calculateProductPrice
+const calculateProductPrice = require("./routes/Users/calculate")
 
 
 
-const allRoutes = [userRegister, userLogin, uploadProductImages, updateProduct, deleteProduct,viewProduct, addProduct, deleteCategory, viewCategory, adminRegisterRoute, adminLoginRoute, adminTokenAuthRoute, adminChangePasswordRoute, adminLogoutRoute,adminResetPasswordLinkRoute,adminResetPasswordRoute, addCategory]
+const allRoutes = [order, calculateProductPrice, userRegister, userLogin, uploadProductImages, updateProduct, deleteProduct,viewProduct, addProduct, deleteCategory, viewCategory, adminRegisterRoute, adminLoginRoute, adminTokenAuthRoute, adminChangePasswordRoute, adminLogoutRoute,adminResetPasswordLinkRoute,adminResetPasswordRoute, addCategory]
 
 for(let i=0;i<allRoutes.length;i++){
     app.use("/api", allRoutes[i])
