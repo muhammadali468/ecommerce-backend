@@ -11,7 +11,7 @@ app.use(cors({
 
 app.use("/categories", express.static("categories"));
 app.use("/cats", express.static("cats"));
-app.use("/products", express.static("products")); 
+app.use("/products", express.static("products"));
 
 const PORT = process.env.PORT
 // Admin
@@ -31,40 +31,30 @@ const addProduct = require("./routes/Product/addProduct");
 const viewProduct = require("./routes/Product/getProducts");
 const deleteProduct = require("./routes/Product/deleteProduct");
 const updateProduct = require("./routes/Product/updateProduct");
-const uploadProductImages = require("./routes/Product/uploadProductImages");
 // user
 const userLogin = require("./routes/Users/login");
 const userRegister = require("./routes/Users/register");
 // order
 const order = require("./routes/Users/placeOrder");
+const viewOrders = require("./routes/Admin/viewOrders");
 // calculateProductPrice
-const calculateProductPrice = require("./routes/Users/calculate")
+const calculateProductPrice = require("./routes/Users/calculate");
+const UserAuthentication = require("./middleware/userAuthentication");
+const AdminAuthentication = require("./middleware/adminAuthentication");
 
+const allRoutes = [calculateProductPrice, userRegister, userLogin, viewProduct, viewCategory, adminRegisterRoute, adminLoginRoute, adminTokenAuthRoute, adminLogoutRoute]
+const userProtectedRoutes = [order]
+const adminProtectedRoutes = [viewOrders, updateProduct, deleteProduct, addProduct, deleteCategory, adminChangePasswordRoute, adminResetPasswordLinkRoute, adminResetPasswordRoute, addCategory]
 
-
-const allRoutes = [order, calculateProductPrice, userRegister, userLogin, uploadProductImages, updateProduct, deleteProduct,viewProduct, addProduct, deleteCategory, viewCategory, adminRegisterRoute, adminLoginRoute, adminTokenAuthRoute, adminChangePasswordRoute, adminLogoutRoute,adminResetPasswordLinkRoute,adminResetPasswordRoute, addCategory]
-
-for(let i=0;i<allRoutes.length;i++){
-    app.use("/api", allRoutes[i])
+for (let i = 0; i < adminProtectedRoutes.length; i++) {
+    app.use("/api/admin", AdminAuthentication, adminProtectedRoutes[i])
 }
-
-// app.use("/api", adminRegisterRoute)
-// app.use("/api", adminLoginRoute)
-// app.use("/api", adminTokenAuthRoute)
-// app.use("/api", adminChangePasswordRoute)
-// app.use("/api", adminLogoutRoute)
-// app.use("/api", adminResetPasswordLinkRoute)
-// app.use("/api", adminResetPasswordRoute)
-// // category
-// app.use("/api", addCategory)
-
-
-
-// Login
-
-app.get("/", (req, res) => {
-    res.send("Server is working!");
-});
+for (let i = 0; i < userProtectedRoutes.length; i++) {
+    app.use("/api/user", UserAuthentication, userProtectedRoutes[i])
+}
+for (let i = 0; i < allRoutes.length; i++) {
+    app.use("/api/public", allRoutes[i])
+}
 
 app.listen(PORT, () => {
     console.log(`App is running on PORT ${PORT}`)

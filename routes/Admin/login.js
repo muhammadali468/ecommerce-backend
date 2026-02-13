@@ -7,8 +7,8 @@ const jwt = require("jsonwebtoken");
 const AdminToken = require("../../models/Admintoken");
 const SECRET_KEY = process.env.ADMIN_TOKEN_SECRET_KEY
 
-// http://localhost:5000/api/admin/login
-router.post("/admin/login", async (req, res) => {
+// http://localhost:5000/api/admin-login
+router.post("/admin-login", async (req, res) => {
     const { adminEmail, adminPassword } = req.body;
     try {
         const adminDBObject = await Admin.findOne({ adminEmail })

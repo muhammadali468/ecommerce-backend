@@ -18,7 +18,7 @@ const uploadCat = multer({
     limits: { fileSize: 1024 * 1024 * 5 }
 })
 
-// http://localhost:5000/api/category/add
+// http://localhost:5000/api/admin/category/add
 router.post("/category/add", uploadCat.single("cat_img"), async (req, res) => {
     const { cat_name } = req.body;
     const result = await new Promise((resolve, reject) => {

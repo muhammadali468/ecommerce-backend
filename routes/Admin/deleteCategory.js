@@ -12,7 +12,7 @@ cloudinary.config({
 })
 
 
-// http://localhost:5000/api/category/delete/id
+// http://localhost:5000/api/admin/category/delete/id
 router.delete("/category/delete/:id", async (req, res) => {
     const categoryObj = await AddCategory.findById(req.params.id)
     const categoryObjImg = categoryObj.cat_img

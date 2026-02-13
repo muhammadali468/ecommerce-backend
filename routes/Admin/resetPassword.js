@@ -5,7 +5,7 @@ const AdminPasswordReset = require("../../models/AdminPasswordReset");
 const Admin = require("../../models/Admin");
 
 // http://localhost:5000/api/admin/reset-password
-router.post("/admin/reset-password", async (req, res) => {
+router.post("/reset-password", async (req, res) => {
     const resetToken = req.body.resetToken;
     const password = await bcrypt.hash(req.body.password, 12);
     const isTokenValid = await AdminPasswordReset.findOne({ resetToken });

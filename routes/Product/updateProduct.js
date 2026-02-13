@@ -2,7 +2,7 @@ const express = require("express");
 const AddProductSchema = require("../../models/AddProduct");
 const router = express.Router();
 
-// http://localhost:5000/api/product/update
+// http://localhost:5000/api/admin/product/update
 router.post("/product/update", async (req, res) => {
     const {productIds, productStatuses} = req.body;
     try {

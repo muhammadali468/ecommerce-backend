@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs")
 const router = express.Router();
 
 // http://localhost:5000/api/user/register
-router.post("/user/register", async (req, res) => {
+router.post("/register", async (req, res) => {
     try {
         const { name, email, password } = req.body
         if (!name || !email || !password) {

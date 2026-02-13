@@ -35,7 +35,7 @@ const uploadImages = multer({ storage: proStore });
 
 
 
-// http://localhost:5000/api/product/uploadimages/id
+// http://localhost:5000/api/admin/product/uploadimages/id
 router.post("/product/uploadimages/:id", uploadImages.array("images"), async (req, res) => {
     const productId = req.params.id;
     const imageFiles = req.files;

@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 // http://localhost:5000/api/admin/change-password
-router.put("/admin/change-password", async (req, res) => {
+router.put("/change-password", async (req, res) => {
     const { email, oldPassword, newPassword } = req.body;
     try {
         const validAdmin = await Admin.findOne({ adminEmail:email });

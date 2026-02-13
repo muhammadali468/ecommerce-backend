@@ -1,12 +1,13 @@
+require("dotenv").config()
 const express = require("express");
 const User = require("../../models/User/user");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const UserAuthentication = require("../../middleware/userAuthentication");
-const USER_SECRET_KEY = "ddf$3122tD2"
+const USER_SECRET_KEY = process.env.USER_AUTHENTICATION_SECRET_KEY
 // http://localhost:5000/api/user/login
-router.post("/user/login", async (req, res) => {
+router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {

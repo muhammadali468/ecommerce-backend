@@ -3,8 +3,8 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 
-// http://localhost:5000/api/admin/register
-router.post("/admin/register", async (req, res) => {
+// http://localhost:5000/api/admin-register
+router.post("/admin-register", async (req, res) => {
     const { adminName, adminEmail, adminPassword } = req.body;
     try {
         const newAdmin = new Admin({

@@ -9,7 +9,7 @@ cloudinary.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 })
-
+// http://localhost:5000/api/admin/product/delete/id
 router.delete("/product/delete/:id", async (req, res) => {
     const product = await AddProductSchema.findById(req.params.id);
     const productImg = product.productThumbnailImg;
@@ -27,7 +27,7 @@ router.delete("/product/delete/:id", async (req, res) => {
         console.log(error)
     }
 })
-
+// http://localhost:5000/api/admin/product/delete/multiple
 router.post("/product/delete/multiple", async (req, res) => {
     const { productIds } = req.body;
     try {

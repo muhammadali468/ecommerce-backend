@@ -1,10 +1,9 @@
 const express = require("express");
 const AdminToken = require("../../models/Admintoken");
-
 const router = express.Router();
 
-// http://localhost:5000/api/admin/logout
-router.post("/admin/logout", async (req, res) => {
+// http://localhost:5000/api/admin-logout
+router.post("/admin-logout", async (req, res) => {
     const token = req.body.token;
     try{
         const isValidTokenRemoved = await AdminToken.findOneAndDelete({ token });

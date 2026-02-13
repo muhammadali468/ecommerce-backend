@@ -5,7 +5,7 @@ const AdminPasswordReset = require("../../models/AdminPasswordReset");
 const router = express.Router();
 
 // http://localhost:5000/api/admin/reset-password-link
-router.post("/admin/reset-password-link", async (req, res) => {
+router.post("/reset-password-link", async (req, res) => {
     const adminEmail = req.body.adminEmail;
     try {
         const isValidEmail = await Admin.findOne({ adminEmail });

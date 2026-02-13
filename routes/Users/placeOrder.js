@@ -3,7 +3,7 @@ const Order = require("../../models/Order");
 const router = express.Router();
 const nodemailer = require("nodemailer");
 
-// http://localhost:5000/api/order
+// http://localhost:5000/api/user/order
 router.post("/order", async (req, res) => {
     const {
         customerName,

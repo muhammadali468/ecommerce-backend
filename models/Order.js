@@ -52,6 +52,6 @@ const OrderSchema = mongoose.Schema({
         type: String,
         default:"pending",
         enum: ["pending", "processing", "shipped", "delivered", "cancelled", "completed", "returned", "refunded", "on-hold"]
-    }
-}, { timestamp: true })
+    },
+}, { timestamps: true })
 module.exports = mongoose.model("Order", OrderSchema)
